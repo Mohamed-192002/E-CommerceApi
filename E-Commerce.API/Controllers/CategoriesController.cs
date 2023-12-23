@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECommerce.Api.DTO;
+using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -53,6 +53,7 @@ namespace ECommerce.Api.Controllers
             var category = _mapper.Map<Category>(model);
 
             await _unitOfWork.CategoryRepo.AddAsync(category);
+
             return Ok(category);
         }
         [HttpPut("Edit_Category_By_ID/{id}")]

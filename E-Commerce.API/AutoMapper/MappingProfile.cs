@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using ECommerce.Api.DTO;
+using E_Commerce.API.Helpers;
+using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 
 namespace ECommerce.Api.AutoMapper
@@ -15,7 +16,10 @@ namespace ECommerce.Api.AutoMapper
             // Product
             CreateMap<Product, ProductDTOById>()
                 .ForMember(p => p.CategoryName, o => o.MapFrom(c => c.Category.Name))
+                .ForMember(p => p.Image, o => o.MapFrom<ProductUrlResolver>())
                 .ReverseMap();
+            CreateMap<Product,UpdateProductDTO>()
+               .ReverseMap();
 
             CreateMap<CreateProductDTO, Product>().ReverseMap();
 

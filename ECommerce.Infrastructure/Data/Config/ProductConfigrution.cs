@@ -16,10 +16,6 @@ namespace ECommerce.Infrastructure.Date.Config
             builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.Name).HasMaxLength(30);
             builder.Property(x => x.Price).HasColumnType("decimal(18,2)");
-            builder
-                .HasOne(x => x.Category)
-                .WithMany()
-                .HasForeignKey(x => x.CategoryId);
             builder.HasData(
                 new Product { Id = 1, Name = "Product 1", Price = 2000, Description = "P1", CategoryId = 1 },
                 new Product { Id = 2, Name = "Product 2", Price = 3000, Description = "P2", CategoryId = 1 },

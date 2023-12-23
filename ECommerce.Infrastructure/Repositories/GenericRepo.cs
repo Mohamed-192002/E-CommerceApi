@@ -65,8 +65,8 @@ namespace ECommerce.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        //public async Task<IEnumerable<T>> GetAllAsync()
-        //=> await _context.Set<T>().AsNoTracking().ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsync()
+        => await _context.Set<T>().AsNoTracking().ToListAsync();
 
         //public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         //{

@@ -9,7 +9,7 @@ namespace ECommerce.Core.Interfaces
 {
     public interface IGenericRepo<T> where T : class
     {
-        //Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync();
         //Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
         //Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         Task<IEnumerable<T>> GetAllAsync(string[] includes = null, Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC");

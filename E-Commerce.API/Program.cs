@@ -1,6 +1,8 @@
 using System.Reflection;
 using ECommerce.Infrastructure;
 using ECommerce.Api.AutoMapper;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace E_Commerce.API
 {
@@ -18,6 +20,9 @@ namespace E_Commerce.API
             builder.Services.AddSwaggerGen();
             builder.Services.InfrastructureConfigration(builder.Configuration);
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
+                ));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -30,7 +35,7 @@ namespace E_Commerce.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 

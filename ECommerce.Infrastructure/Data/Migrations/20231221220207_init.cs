@@ -2,10 +2,12 @@
 
 #nullable disable
 
-namespace ECommerce.Infrastructure.Date.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace ECommerce.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +34,7 @@ namespace ECommerce.Infrastructure.Date.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductPicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -44,6 +47,28 @@ namespace ECommerce.Infrastructure.Date.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "C1", "Category 1" },
+                    { 2, "C2", "Category 2" },
+                    { 3, "C3", "Category 3" },
+                    { 4, "C4", "Category 4" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "Description", "Name", "Price", "ProductPicture" },
+                values: new object[,]
+                {
+                    { 1, 1, "P1", "Product 1", 2000m, null },
+                    { 2, 1, "P2", "Product 2", 3000m, null },
+                    { 3, 2, "P3", "Product 3", 2500m, null },
+                    { 4, 3, "P4", "Product 4", 4000m, null }
                 });
 
             migrationBuilder.CreateIndex(

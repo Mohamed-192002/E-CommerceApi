@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using ECommerce.Api.DTO;
+using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
@@ -33,7 +32,7 @@ namespace ECommerce.Api.Controllers
         [HttpGet("Get_Product_By_ID/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var product = await _unitOfWork.ProductRepo.GetAsync(p => p.Id == id, new[] { "Category" });
+            var product = await _unitOfWork.ProductRepo.GetAsync(p => p.Id == id, ["Category"]);
 
             if (product is not null)
             {
@@ -43,16 +42,30 @@ namespace ECommerce.Api.Controllers
             return BadRequest("Not Found");
         }
         [HttpPost("Add_New_Product")]
-        public async Task<IActionResult> Add(CreateProductDTO model)
+        public async Task<IActionResult> Add([FromForm] CreateProductDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            var result = await _unitOfWork.ProductRepo.AddAsync(model);
+            return result ? Ok(model) : BadRequest();
+        }
+        //[HttpPut("Update_Product_By_ID")]
+        //public async Task<IActionResult> Put([FromForm] UpdateProductDTO model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+        //    var result = await _unitOfWork.ProductRepo.UpdateAsync(model);
+        //    return result ? Ok(model) : BadRequest();
 
-            // mapping
-            var product = _mapper.Map<Product>(model);
 
-            await _unitOfWork.ProductRepo.AddAsync(product);
-            return Ok(product);
+        //}
+        [HttpPut("Edit_Product_By_ID")]
+        public async Task<IActionResult> Put(UpdateProductDTO model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var result = await _unitOfWork.ProductRepo.UpdateAsync(model);
+                return result ? Ok(model) : BadRequest($"Category not found , Id {model.Id} incorrect");
         }
     }
 }

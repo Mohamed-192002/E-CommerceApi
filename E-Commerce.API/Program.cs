@@ -3,6 +3,8 @@ using ECommerce.Infrastructure;
 using ECommerce.Api.AutoMapper;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using StackExchange.Redis;
+using Microsoft.Extensions.Configuration;
 
 namespace E_Commerce.API
 {
@@ -20,6 +22,13 @@ namespace E_Commerce.API
             builder.Services.AddSwaggerGen();
             builder.Services.InfrastructureConfigration(builder.Configuration);
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            // Configure Redis
+            builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
+            {
+                var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configure);
+            });
+
             builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")
                 ));
@@ -31,6 +40,7 @@ namespace E_Commerce.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseHttpsRedirection();
 
             app.UseStatusCodePagesWithReExecute("/erorrs/{0}");

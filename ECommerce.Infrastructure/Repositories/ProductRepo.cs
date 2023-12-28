@@ -3,7 +3,10 @@ using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
 using ECommerce.Infrastructure.Date;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace ECommerce.Infrastructure.Repositories
 {
@@ -19,7 +22,44 @@ namespace ECommerce.Infrastructure.Repositories
             _fileProvider = fileProvider;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<Product>> GetAllAsync(int? pageNumber, int? pageSize,
+            Expression<Func<Product, bool>> SearchByCategoryId = null, string SearchByName = null, string[] includes = null
+            , Expression<Func<Product, object>> orderBy = null, string orderByDirection = "ASC")
+        {
+            IQueryable<Product> query = _context.Set<Product>();
 
+
+            // pageSize = pageSize > 15 ? pageSize : 15;
+
+            if (includes != null)
+                foreach (var include in includes)
+                    query = query.Include(include);
+
+            if (orderBy != null)
+            {
+                if (orderByDirection == "ASC")
+                    query = query.OrderBy(orderBy);
+                else
+                    query = query.OrderByDescending(orderBy);
+            }
+
+
+            // search by name
+            if (SearchByName is not null)
+                query = query.Where(p => p.Name.ToLower().Contains(SearchByName.ToLower()));
+
+
+
+            // filter by category Id
+            if (SearchByCategoryId is not null)
+                query = query.Where(SearchByCategoryId);
+
+
+
+            query = query.Skip((int)(pageSize * (pageNumber - 1))).Take((int)pageSize);
+
+            return query;
+        }
         public async Task<bool> AddAsync(CreateProductDTO productDTO)
         {
             var src = "";
@@ -65,7 +105,7 @@ namespace ECommerce.Infrastructure.Repositories
 
                 await productDTO.Image.CopyToAsync(fileStreem);
 
-                
+
             }
             if (currentProduct.ProductPicture is not null)
             {
@@ -77,7 +117,7 @@ namespace ECommerce.Infrastructure.Repositories
             product.ProductPicture = src;
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
-            return true;  
+            return true;
         }
     }
 }

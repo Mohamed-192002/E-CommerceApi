@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
+using E_Commerce.API.Helpers;
 using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
 
 namespace ECommerce.Api.Controllers
 {
@@ -19,14 +25,27 @@ namespace ECommerce.Api.Controllers
             _mapper = mapper;
         }
         [HttpGet("Get_All_Products")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int? categoryId, string SearchByName, int? pageNumber, int? pageSize)
         {
-            var products = await _unitOfWork.ProductRepo.GetAllAsync(new[] { "Category" });
+             pageNumber ??= 1;
+            pageSize ??= 3;
+            var products = await _unitOfWork.ProductRepo.GetAllAsync
+                (
+                     pageNumber, pageSize,
+                     categoryId.HasValue ? p => p.CategoryId == categoryId : null,
+                      SearchByName,
+                     ["Category"],
+                     p => p.Price
+                );
+
             if (products is not null)
             {
-                var productsDto = _mapper.Map<IEnumerable<ProductDTOById>>(products);
-                return Ok(productsDto);
+                var productsDto = _mapper.Map<IReadOnlyList<ProductDTOById>>(products);
+                var totalCount = productsDto.Count;
+                return Ok(new Pagination<ProductDTOById>(pageNumber, pageSize, totalCount, productsDto));
             }
+
+
             return BadRequest("Not Found");
         }
         [HttpGet("Get_Product_By_ID/{id}")]
@@ -65,7 +84,7 @@ namespace ECommerce.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var result = await _unitOfWork.ProductRepo.UpdateAsync(model);
-                return result ? Ok(model) : BadRequest($"Category not found , Id {model.Id} incorrect");
+            return result ? Ok(model) : BadRequest($"Category not found , Id {model.Id} incorrect");
         }
     }
 }

@@ -31,8 +31,9 @@ namespace E_Commerce.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
+
+            app.UseStatusCodePagesWithReExecute("/erorrs/{0}");
 
             app.UseAuthorization();
             app.UseStaticFiles();

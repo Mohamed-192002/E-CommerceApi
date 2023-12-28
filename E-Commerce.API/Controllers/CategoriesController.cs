@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using E_Commerce.API.Errors;
 using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
@@ -23,7 +24,7 @@ namespace ECommerce.Api.Controllers
         [HttpGet("Get_All_Categories")]
         public async Task<IActionResult> GetAll()
         {
-            var categories = await _unitOfWork.CategoryRepo.GetAllAsync();
+            var categories = await _unitOfWork.CategoryRepo.GetAllAsync(n=>n.Name);
             if (categories is not null)
             {
                 var categoriesDto = _mapper.Map<IEnumerable<CategoryDTOById>>(categories);
@@ -41,7 +42,7 @@ namespace ECommerce.Api.Controllers
                 var categoryDto = _mapper.Map<CategoryDTOById>(category);
                 return Ok(categoryDto);
             }
-            return BadRequest("Not Found");
+            return BadRequest();
         }
         [HttpPost("Add_New_Category")]
         public async Task<IActionResult> Add(CategoryDTO model)

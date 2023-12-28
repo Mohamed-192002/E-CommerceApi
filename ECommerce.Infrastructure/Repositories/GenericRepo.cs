@@ -10,19 +10,14 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Infrastructure.Repositories
 {
-    public class GenericRepo<T> : IGenericRepo<T> where T : class
+    public class GenericRepo<T>(AppDbContext context) : IGenericRepo<T> where T : class
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context = context;
 
-        public GenericRepo(AppDbContext context) => _context = context;
-
-        public async Task<IEnumerable<T>> GetAllAsync(string[] includes = null, Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC")
+        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>> orderBy = null
+            , string orderByDirection = "ASC")
         {
             IQueryable<T> query = _context.Set<T>();
-
-            if (includes != null)
-                foreach (var include in includes)
-                    query = query.Include(include);
 
             if (orderBy != null)
             {
@@ -31,8 +26,7 @@ namespace ECommerce.Infrastructure.Repositories
                 else
                     query = query.OrderByDescending(orderBy);
             }
-
-            return await query.ToListAsync();
+            return Task.FromResult<IEnumerable<T>>(query);
         }
         public async Task<T> GetAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
@@ -68,23 +62,6 @@ namespace ECommerce.Infrastructure.Repositories
         public async Task<IEnumerable<T>> GetAllAsync()
         => await _context.Set<T>().AsNoTracking().ToListAsync();
 
-        //public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
-        //{
-        //    var quary = _context.Set<T>().AsQueryable();
-        //    foreach (var item in includes)
-        //        quary = quary.Include(item);
-        //    return await quary.ToListAsync();
-        //}
-
-        //public async Task<T> GetAsync(int id)
-        //=> await _context.Set<T>().FindAsync(id);
-
-        //public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
-        //{
-        //    IQueryable<T> quary = _context.Set<T>();
-        //    foreach (var item in includes)
-        //        quary = quary.Include(item);
-        //    return await ((DbSet<T>)quary).FindAsync(id);
-        //}
+        
     }
 }

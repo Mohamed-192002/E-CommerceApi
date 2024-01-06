@@ -1,5 +1,6 @@
 ﻿
 
+using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 
 namespace ECommerce.Core.Interfaces

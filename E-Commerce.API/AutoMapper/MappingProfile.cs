@@ -18,11 +18,17 @@ namespace ECommerce.Api.AutoMapper
                 .ForMember(p => p.CategoryName, o => o.MapFrom(c => c.Category.Name))
                 .ForMember(p => p.Image, o => o.MapFrom<ProductUrlResolver>())
                 .ReverseMap();
-            CreateMap<Product,UpdateProductDTO>()
+            CreateMap<Product, UpdateProductDTO>()
                .ReverseMap();
 
             CreateMap<CreateProductDTO, Product>().ReverseMap();
 
+            //User
+            CreateMap<Address, AddressDTO>().ReverseMap();
+
+            // Basket
+            CreateMap<CustomerBasket, CustomerBasketDTO>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDTO>().ReverseMap();
 
         }
 

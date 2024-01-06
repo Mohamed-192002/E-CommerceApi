@@ -1,5 +1,5 @@
-﻿using ECommerce.Core.Interfaces;
-using ECommerce.Core.Entities;
+﻿using AutoMapper;
+using ECommerce.Core.DTO;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -9,6 +9,7 @@ namespace ECommerce.Infrastructure.Repositories
     {
         private readonly IDatabase _database = redis.GetDatabase();
 
+
         public async Task<bool> DeleteBasketAsync(string BasketId)
         {
             bool _isKeyExist = await _database.KeyExistsAsync(BasketId);
@@ -17,7 +18,7 @@ namespace ECommerce.Infrastructure.Repositories
 
         public async Task<CustomerBasket> GetBasketAsync(string BasketId)
         {
-            var data = await _database.StringGetAsync(BasketId);    
+            var data = await _database.StringGetAsync(BasketId);
             return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<CustomerBasket>(data);
         }
 

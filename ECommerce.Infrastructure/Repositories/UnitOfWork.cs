@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using ECommerce.Core.Interfaces;
-using ECommerce.Infrastructure.Date;
 using Microsoft.Extensions.FileProviders;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerce.Infrastructure.Repositories
 {

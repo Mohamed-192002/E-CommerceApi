@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce.Core.DTO;
-using ECommerce.Core.Entities;
-using ECommerce.Core.Interfaces;
-using ECommerce.Infrastructure.Date;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace ECommerce.Infrastructure.Repositories

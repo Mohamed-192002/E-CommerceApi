@@ -17,6 +17,8 @@ namespace E_Commerce.API.Controllers
         public async Task<IActionResult> GetBasketById(string id)
         {
             var basket = await _unitOfWork.BasketRepo.GetBasketAsync(id);
+            if (basket is null)
+            return NotFound();
             return Ok(basket ?? new CustomerBasket(id));
         }
         [HttpPost("Update-Basket-Item")]

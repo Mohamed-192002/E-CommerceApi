@@ -43,7 +43,7 @@ namespace ECommerce.Infrastructure.Repositories
                 _context.Update(entity);
                 await _context.SaveChangesAsync();
             }
-        }
+        } 
         public async Task DeleteAsync(int id)
         {
             var entity = await _context.Set<T>().FindAsync(id);

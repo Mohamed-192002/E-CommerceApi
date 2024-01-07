@@ -11,6 +11,8 @@ namespace ECommerce.Core.Interfaces
         public ICategoryRepo CategoryRepo { get; }
         public IProductRepo ProductRepo { get; }
         public IBasketRepo BasketRepo { get; }
+        public IDeliveryMethodRepo DeliveryMethodRepo { get; }
+        public IOrderRepo OrderRepo { get; }
 
     }
 }

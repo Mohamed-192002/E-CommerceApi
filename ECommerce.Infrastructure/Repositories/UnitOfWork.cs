@@ -14,6 +14,9 @@ namespace ECommerce.Infrastructure.Repositories
         public ICategoryRepo CategoryRepo { get; }
         public IProductRepo ProductRepo { get; }
         public IBasketRepo BasketRepo { get; }
+        public IDeliveryMethodRepo DeliveryMethodRepo { get; }
+
+        public IOrderRepo OrderRepo { get; }
 
         public UnitOfWork(AppDbContext context, IFileProvider fileProvider, IMapper mapper, IConnectionMultiplexer multiplexer)
         {
@@ -24,6 +27,9 @@ namespace ECommerce.Infrastructure.Repositories
             CategoryRepo = new CategoryRepo(context);
             ProductRepo = new ProductRepo(context, fileProvider, mapper);
             BasketRepo = new BasketRepo(_multiplexer);
+            DeliveryMethodRepo = new DeliveryMethodRepo(context);
+            OrderRepo = new OrderRepo(context);
+
         }
     }
 }

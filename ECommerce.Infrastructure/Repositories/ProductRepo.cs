@@ -23,9 +23,6 @@ namespace ECommerce.Infrastructure.Repositories
         {
             IQueryable<Product> query = _context.Set<Product>();
 
-
-            // pageSize = pageSize > 15 ? pageSize : 15;
-
             if (includes != null)
                 foreach (var include in includes)
                     query = query.Include(include);
@@ -55,6 +52,7 @@ namespace ECommerce.Infrastructure.Repositories
 
             return query;
         }
+
         public async Task<bool> AddAsync(CreateProductDTO productDTO)
         {
             var src = "";

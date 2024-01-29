@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using E_Commerce.API.Errors;
 using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.API.Controllers
@@ -18,7 +20,8 @@ namespace E_Commerce.API.Controllers
         {
             var basket = await _unitOfWork.BasketRepo.GetBasketAsync(id);
             if (basket is null)
-            return NotFound();
+            return NotFound(new BaseCommonResponse(404));
+
             return Ok(basket ?? new CustomerBasket(id));
         }
         [HttpPost("Update-Basket-Item")]

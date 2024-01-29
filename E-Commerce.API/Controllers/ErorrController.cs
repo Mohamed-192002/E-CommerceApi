@@ -1,12 +1,12 @@
-﻿using E_Commerce.API.Errors;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper.Configuration.Annotations;
+using E_Commerce.API.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.API.Controllers
 {
-    [Route("errors/{statusCode}")]
+    [Route("Errors/{statusCode}")]
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi =true)]
+    [ApiExplorerSettings(IgnoreApi =true)] 
     public class ErorrController : ControllerBase
     {
         [HttpGet]

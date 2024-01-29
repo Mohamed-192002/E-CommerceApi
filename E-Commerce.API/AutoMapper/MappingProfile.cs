@@ -44,6 +44,7 @@ namespace ECommerce.Api.AutoMapper
                 .ForMember(d => d.ProductItemId, o => o.MapFrom(c => c.Id))
                 .ForMember(d => d.ProductItemName, o => o.MapFrom(c => c.ProductItemOrdered.ProductItemName))
                 .ForMember(d => d.PictureUrl, o => o.MapFrom(c => c.ProductItemOrdered.PictureUrl))
+                .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderUrlResolver>())
 
                 .ReverseMap();
 

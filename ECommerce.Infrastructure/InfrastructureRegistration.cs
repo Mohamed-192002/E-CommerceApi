@@ -10,6 +10,8 @@ namespace ECommerce.Infrastructure
             services.AddScoped(typeof(ITokenServices), typeof(TokenServices));
             services.AddScoped(typeof(IOrderRepo), typeof(OrderRepo));
             services.AddScoped(typeof(IOrderServices), typeof(OrderServices));
+            services.AddScoped(typeof(IPaymentServices), typeof(PaymentServices));
+
 
             services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 

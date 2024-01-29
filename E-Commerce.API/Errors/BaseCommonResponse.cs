@@ -3,10 +3,13 @@ namespace E_Commerce.API.Errors
 {
     public class BaseCommonResponse
     {
-        public BaseCommonResponse(int statusCode, string statusMessage=null)
+        public int StatusCode { get; set; }
+        public string StatusMessage { get; set; }
+
+        public BaseCommonResponse(int statusCode, string statusMessage = null)
         {
             StatusCode = statusCode;
-            StatusMessage = statusMessage??DefaultMessageForStatusCode(statusCode);
+            StatusMessage = statusMessage ?? DefaultMessageForStatusCode(statusCode);
         }
 
         private string DefaultMessageForStatusCode(int statusCode)
@@ -19,7 +22,6 @@ namespace E_Commerce.API.Errors
             _ => null
         };
 
-        public int StatusCode { get; set; }
-        public string StatusMessage { get; set; }
+
     }
 }

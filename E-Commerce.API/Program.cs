@@ -6,6 +6,10 @@ using System.IO;
 using StackExchange.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using E_Commerce.API.Middleware;
+using Microsoft.AspNetCore.Mvc;
+using E_Commerce.API.Errors;
+using E_Commerce.API.Extensions;
 
 namespace E_Commerce.API
 {
@@ -18,6 +22,7 @@ namespace E_Commerce.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddApiRegistration();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             // Add Authorization To Swagger 
@@ -46,7 +51,6 @@ namespace E_Commerce.API
                         }
                      });
             });
-            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             // Configure Redis
             builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
             {
@@ -67,9 +71,10 @@ namespace E_Commerce.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/Erorrs/{0}");
 
-            //  app.UseStatusCodePagesWithReExecute("/erorrs/{0}");
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();

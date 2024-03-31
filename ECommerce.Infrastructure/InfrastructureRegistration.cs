@@ -6,6 +6,8 @@ namespace ECommerce.Infrastructure
         public static IServiceCollection InfrastructureConfigration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
             services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
             services.AddScoped(typeof(ITokenServices), typeof(TokenServices));
             services.AddScoped(typeof(IOrderRepo), typeof(OrderRepo));
@@ -13,7 +15,6 @@ namespace ECommerce.Infrastructure
             services.AddScoped(typeof(IPaymentServices), typeof(PaymentServices));
 
 
-            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
 
             var connection = configuration.GetConnectionString("DefaultConnection");

@@ -53,29 +53,30 @@ namespace ECommerce.Infrastructure.Repositories
             return query;
         }
 
-        public async Task<bool> AddAsync(CreateProductDTO productDTO)
-        {
-            var src = "";
-            if (productDTO.Image is not null)
+            public async Task<bool> AddAsync(CreateProductDTO productDTO)
             {
-                var rootpsth = "/images/products/";
-                if (!Directory.Exists("wwwroot" + rootpsth))
-                    Directory.CreateDirectory("wwwroot" + rootpsth);
+                var src = "";
+                if (productDTO.Image is not null)
+                {
+                    var rootpsth = "/images/products/";
+                    if (!Directory.Exists("wwwroot" + rootpsth))
+                        Directory.CreateDirectory("wwwroot" + rootpsth);
 
-                var productName = $"{Guid.NewGuid()}" + productDTO.Image.FileName;
-                src = rootpsth + productName;
-                var pictureInfo = _fileProvider.GetFileInfo(src);
-                var root = pictureInfo.PhysicalPath;
-                using var fileStreem = new FileStream(root, FileMode.Create);
+                    var productName = $"{Guid.NewGuid()}" + productDTO.Image.FileName;
+                    src = rootpsth + productName;
+                    var pictureInfo = _fileProvider.GetFileInfo(src);
+                    var root = pictureInfo.PhysicalPath;
+                    using var fileStreem = new FileStream(root, FileMode.Create);
 
-                await productDTO.Image.CopyToAsync(fileStreem);
+                    await productDTO.Image.CopyToAsync(fileStreem);
+                }
+
+                var product = _mapper.Map<Product>(productDTO);
+                product.ProductPicture = src;
+                await _context.Products.AddAsync(product);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            var product = _mapper.Map<Product>(productDTO);
-            product.ProductPicture = src;
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
-            return true;
-        }
 
         // Solve this another time
         public async Task<bool> UpdateAsync(UpdateProductDTO productDTO)

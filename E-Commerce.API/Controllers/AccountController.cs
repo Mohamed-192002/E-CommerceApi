@@ -22,7 +22,7 @@ namespace E_Commerce.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterDTO model)
+        public async Task<IActionResult> RegisterAsync([FromForm] RegisterDTO model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

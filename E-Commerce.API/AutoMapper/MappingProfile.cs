@@ -3,7 +3,6 @@ using E_Commerce.API.Helpers;
 using ECommerce.Core.DTO;
 using ECommerce.Core.Entities;
 using ECommerce.Core.Entities.Orders;
-using StackExchange.Redis;
 using Order = ECommerce.Core.Entities.Orders.Order;
 
 namespace ECommerce.Api.AutoMapper

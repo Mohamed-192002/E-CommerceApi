@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using ECommerce.Core.DTO;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System.Text.Json;
 
 namespace ECommerce.Infrastructure.Repositories

@@ -17,7 +17,7 @@ namespace E_Commerce.API.Controllers
             _paymentServices = paymentServices;
         }
         [HttpPost("Create-And-Update-Payment/{basketId}")]
-        public async Task<ActionResult<CustomerBasket>> CreateAndUpdatePayment(string basketId)
+        public async Task<ActionResult<CustomerBasket>> CreateAndUpdatePaymentIntent(string basketId)
         {
             return await _paymentServices.CreateOrUpdatePayment(basketId);
         }

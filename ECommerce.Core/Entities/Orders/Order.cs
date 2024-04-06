@@ -13,13 +13,14 @@ namespace ECommerce.Core.Entities.Orders
 
         }
         public Order(string buyerEmail, ShipAddress shipToAddress
-            , DeliveryMethod deliveryMethod, IReadOnlyList<OrderItem> orderItems, decimal subTotal)
+            , DeliveryMethod deliveryMethod, IReadOnlyList<OrderItem> orderItems, decimal subTotal, string paymentIntentId)
         {
             BuyerEmail = buyerEmail;
             ShipToAddress = shipToAddress;
             DeliveryMethod = deliveryMethod;
             OrderItems = orderItems;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string BuyerEmail { get; set; }
@@ -27,12 +28,11 @@ namespace ECommerce.Core.Entities.Orders
         public ShipAddress ShipToAddress { get; set; }
         public DeliveryMethod DeliveryMethod { get; set; }
         public IReadOnlyList<OrderItem> OrderItems { get; set; }
+        public string PaymentIntentId { get; set; }
         public decimal SubTotal { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
         decimal TotalPrice => SubTotal + DeliveryMethod.Price;
-
-
 
     }
 }

@@ -13,5 +13,10 @@ namespace ECommerce.Core.DTO
         [Required]
         public string Id { get; set; }
         public List<BasketItemDTO> BasketItems { get; set; } = new List<BasketItemDTO>();
+        public int? DeliveryMethodId { get; set; }
+        public string ClientSecret { get; set; }
+        public string PaymentIntentId { get; set; }
+        public decimal ShippingPrice { get; set; }
+
     }
 }

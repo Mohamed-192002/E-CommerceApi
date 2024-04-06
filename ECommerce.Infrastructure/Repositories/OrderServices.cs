@@ -28,7 +28,7 @@ namespace ECommerce.Infrastructure.Repositories
             }
             var deliveryMethod = await _unitOfWork.DeliveryMethodRepo.GetAsync(x => x.Id == deliveryMethodId);
             var subTotal = Items.Sum(x => x.Price * x.Quantity);
-            var order = new Order(buyerEmail, shipAddress, deliveryMethod, Items, subTotal);
+            var order = new Order(buyerEmail, shipAddress, deliveryMethod, Items, subTotal,basket.PaymentIntentId);
             if (order is null)
                 return null;
             // add order in database
